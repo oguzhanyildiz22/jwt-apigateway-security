@@ -20,7 +20,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public String addNewUser(@RequestBody UserCredential user) {
-        return service.saveUser(user);
+        if (user.getName().isEmpty()){
+            return "name field can not be empty";
+        } else if (user.getEmail().isEmpty()) {
+            return "Email field can not be empty";
+        } else if (user.getPassword().isEmpty()) {
+            return "password field can not be empty";
+        }else {
+            return service.saveUser(user);
+        }
+
     }
 
     @PostMapping("/token")
@@ -35,7 +44,11 @@ public class AuthController {
 
     @GetMapping("/validate")
     public String validateToken(@RequestParam("token") String token) {
-        service.validateToken(token);
-        return "Token is valid";
+        if (token.isEmpty()){
+            return "empty token field";
+        }else {
+            service.validateToken(token);
+            return "Token is valid";
+        }
     }
 }
